@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="mr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>सर्किट</title>
+  
+  <!-- IBM Plex Sans & IBM Plex Sans Devanagari Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Devanagari:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"IBM Plex Sans Devanagari"', '"IBM Plex Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              live: '#f97316',
+              neutral: '#06b6d4',
+              glow: '#eab308'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'IBM Plex Sans Devanagari', 'IBM Plex Sans', sans-serif;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Paragraph typography rules ensuring clean justification without awkward broken words */
+    .marathi-body {
+      text-align: justify;
+      text-justify: inter-word;
+      word-break: normal;
+      overflow-wrap: break-word;
+      hyphens: none;
+      -webkit-hyphens: none;
+    }
+
+    /* SVG Circuit animations */
+    @keyframes pulseEnergy {
+      0% {
+        stroke-dashoffset: 240;
+      }
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes glowBulb {
+      0%, 100% {
+        filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.45)) drop-shadow(0 0 25px rgba(251, 191, 36, 0.2));
+      }
+      50% {
+        filter: drop-shadow(0 0 22px rgba(251, 191, 36, 0.95)) drop-shadow(0 0 45px rgba(245, 158, 11, 0.5));
+      }
+    }
+
+    @keyframes filamentPulse {
+      0%, 100% {
+        stroke: #f59e0b;
+        opacity: 0.85;
+      }
+      50% {
+        stroke: #fef08a;
+        opacity: 1;
+      }
+    }
+
+    .pulse-live {
+      stroke-dasharray: 20, 20;
+      animation: pulseEnergy 3s linear infinite;
+    }
+
+    .pulse-neutral {
+      stroke-dasharray: 20, 20;
+      animation: pulseEnergy 3s linear infinite reverse;
+    }
+
+    .bulb-glow-layer {
+      animation: glowBulb 2.6s ease-in-out infinite;
+    }
+
+    .filament-glow {
+      animation: filamentPulse 2.6s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300 flex flex-col justify-between selection:bg-amber-400 selection:text-slate-900">
+
+  <header class="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-5 pb-2 flex justify-end items-center gap-3">
+    <!-- Share Button -->
+    <button 
+      id="shareBtn" 
+      aria-label="Share" 
+      class="p-2.5 rounded-full bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700/80 shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+      title="Share"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <circle cx="18" cy="5" r="3"></circle>
+        <circle cx="6" cy="12" r="3"></circle>
+        <circle cx="18" cy="19" r="3"></circle>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+      </svg>
+    </button>
+
+    <!-- Theme Toggle Switcher -->
+    <button 
+      id="themeToggleBtn" 
+      aria-label="Toggle Theme" 
+      class="p-2.5 rounded-full bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700/80 shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+      title="Switch Theme"
+    >
+      <!-- Sun Icon (shown in dark mode) -->
+      <svg id="sunIcon" class="w-5 h-5 hidden dark:block text-amber-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+      <!-- Moon Icon (shown in light mode) -->
+      <svg id="moonIcon" class="w-5 h-5 block dark:hidden text-slate-600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    </button>
+  </header>
+
+  <main class="w-full max-w-3xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-6 flex-grow flex flex-col items-center">
+    
+    <article class="w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl shadow-xl dark:shadow-2xl border border-slate-200/90 dark:border-slate-800 p-6 sm:p-10 md:p-12 transition-colors duration-300">
+      
+      <!-- Interactive Animated Circuit SVG Graphic -->
+      <div class="w-full flex justify-center mb-6">
+        <svg class="w-full max-w-[420px] h-40 sm:h-48 select-none" viewBox="0 0 460 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animated Electrical Circuit Illustration">
+          <defs>
+            <linearGradient id="liveWireGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#f97316"/>
+              <stop offset="50%" stop-color="#ef4444"/>
+              <stop offset="100%" stop-color="#f59e0b"/>
+            </linearGradient>
+            
+            <linearGradient id="neutralWireGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#0284c7"/>
+              <stop offset="50%" stop-color="#06b6d4"/>
+              <stop offset="100%" stop-color="#38bdf8"/>
+            </linearGradient>
+
+            <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+
+          <!-- Circuit background path traces (inactive track) -->
+          <!-- Top Path: Live Wire -->
+          <path d="M 90 90 L 90 35 L 230 35 L 230 55" stroke="currentColor" class="text-slate-300 dark:text-slate-700/60" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <!-- Bottom Path: Neutral Wire -->
+          <path d="M 90 90 L 90 145 L 230 145 L 230 125" stroke="currentColor" class="text-slate-300 dark:text-slate-700/60" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+          <!-- Animated Live Current Path (Orange / Red) -->
+          <path d="M 90 90 L 90 35 L 230 35 L 230 55" stroke="url(#liveWireGrad)" stroke-width="3.5" stroke-linecap="round" fill="none" class="pulse-live" filter="url(#softGlow)"/>
+
+          <!-- Animated Neutral Current Path (Cyan / Sky) -->
+          <path d="M 90 90 L 90 145 L 230 145 L 230 125" stroke="url(#neutralWireGrad)" stroke-width="3.5" stroke-linecap="round" fill="none" class="pulse-neutral" filter="url(#softGlow)"/>
+
+          <!-- Power Source / Battery Unit on Left -->
+          <g transform="translate(60, 65)">
+            <rect x="0" y="0" width="60" height="50" rx="8" fill="currentColor" class="text-slate-200 dark:text-slate-800 stroke-slate-300 dark:stroke-slate-700" stroke-width="2"/>
+            <!-- Positive terminal (+ / Live) -->
+            <circle cx="30" cy="-2" r="4" fill="#f97316"/>
+            <!-- Negative terminal (- / Neutral) -->
+            <circle cx="30" cy="52" r="4" fill="#06b6d4"/>
+            <!-- Battery cell polarity indicators -->
+            <line x1="20" y1="18" x2="20" y2="32" stroke="#f97316" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="13" y1="25" x2="27" y2="25" stroke="#f97316" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="33" y1="25" x2="47" y2="25" stroke="#06b6d4" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+
+          <!-- Switch & MCB Node on Top Branch -->
+          <g transform="translate(145, 23)">
+            <rect x="0" y="0" width="30" height="24" rx="4" class="fill-slate-100 dark:fill-slate-800 stroke-slate-300 dark:stroke-slate-600" stroke-width="1.5"/>
+            <circle cx="8" cy="12" r="2.5" fill="#f97316"/>
+            <circle cx="22" cy="12" r="2.5" fill="#f97316"/>
+            <line x1="8" y1="12" x2="21" y2="12" stroke="#f97316" stroke-width="2" stroke-linecap="round"/>
+          </g>
+
+          <!-- Stabilizer / Resistance Node on Bottom Branch -->
+          <g transform="translate(145, 133)">
+            <rect x="0" y="0" width="30" height="24" rx="4" class="fill-slate-100 dark:fill-slate-800 stroke-slate-300 dark:stroke-slate-600" stroke-width="1.5"/>
+            <path d="M 6 12 L 10 7 L 15 17 L 20 7 L 24 12" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </g>
+
+          <!-- Central Pulsating Light Bulb (Illuminated Node) -->
+          <g transform="translate(230, 90)" class="bulb-glow-layer">
+            <!-- Glow circle background -->
+            <circle cx="0" cy="0" r="32" fill="#fbbf24" fill-opacity="0.25"/>
+            <!-- Glass enclosure -->
+            <circle cx="0" cy="-2" r="24" fill="#fef3c7" fill-opacity="0.4" stroke="#f59e0b" stroke-width="2"/>
+            <!-- Filament core glowing brightly -->
+            <path d="M -8 6 L -6 -8 Q 0 -14 6 -8 L 8 6" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" fill="none" class="filament-glow"/>
+            <circle cx="0" cy="-8" r="3.5" fill="#fef08a"/>
+            <!-- Bulb Base fitting -->
+            <rect x="-9" y="18" width="18" height="6" rx="2" class="fill-slate-400 dark:fill-slate-600"/>
+            <rect x="-7" y="24" width="14" height="4" rx="1.5" class="fill-slate-500 dark:fill-slate-700"/>
+          </g>
+
+          <!-- Circuit Loop Return Node to Grid -->
+          <g transform="translate(320, 65)">
+            <rect x="0" y="0" width="70" height="50" rx="8" fill="currentColor" class="text-slate-100 dark:text-slate-800/80 stroke-slate-300 dark:stroke-slate-700" stroke-width="1.5"/>
+            <path d="M 230 68 L 320 68" stroke="url(#liveWireGrad)" stroke-width="3" stroke-linecap="round" class="pulse-live"/>
+            <path d="M 230 112 L 320 112" stroke="url(#neutralWireGrad)" stroke-width="3" stroke-linecap="round" class="pulse-neutral"/>
+            
+            <!-- Grid wave visualization inside target device -->
+            <path d="M 15 25 Q 25 10 35 25 T 55 25" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          </g>
+        </svg>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-center text-slate-900 dark:text-white mb-8 sm:mb-10 selection:bg-amber-500">
+        सर्किट
+      </h1>
+
+      <div class="marathi-body space-y-5 text-base sm:text-lg md:text-xl text-slate-700 dark:text-slate-300 leading-relaxed sm:leading-loose">
+        <p>
+          विजेवर चालणाऱ्या उपकरणाला सर्वसाधारणतः दोन वायर्स असतात. एसी असेल एक लाईव्ह व दुसरी न्यूट्रल आणि डीसी असेल तर पॉझिटीव्ह आणि निगेटीव्ह. या दोनही वायर्स जोडून स्विच चालू केला की करंट वाहून सर्किट पूर्ण होते व दिवा पेटतो/उपकरण चालते. लाईव्ह वायर मधे पूर्ण व्होल्टेज असले तरी न्यूट्रल जोडल्याशिवाय त्याचा उपयोग होत नाही.
+        </p>
+
+        <p>
+          लाईव्ह/पॉझिटीव्ह वायरचे व्होल्टेज योग्य त्या प्रमाणात असेल तरच उपकरण नीट चालते. कमी असेल तर नीट चालत नाही आणि जास्त झाल्यास शॉक बसण्याचा, करंट अवास्तव वाढून जाळपोळ होण्याचा धोका संभवतो. असे होऊ नये म्हणून फ्यूज, एमसीबी, स्टॅबिलायझर यासारखी उपकरणे सर्किटमधे जोडलेली असतात.
+        </p>
+
+        <p>
+          आपल्या आपापसातील संवादाचे - कम्युनिकेशनचे असेच काहीसे असते. इथे लाईव्ह/पॉझिटीव्ह म्हणजे आपले बोलणे. त्याचा टोन (व्होल्टेज) योग्य तितका असेल तर संवादांचा करंट पुरेसा राहून नातेसंबंधांच्या ग्रिडची फ्रिक्वेन्सी स्थिर व सिस्टम स्टेबल राहते. बोलणे उगाचच कमी केले तर आपण ग्रिडबाह्य होण्याचा आणि उच्चारवात झाले तर विसंवाद वाढून ग्रिड फेल होण्याचा धोका!
+        </p>
+
+        <p>
+          असे काही होऊ नये म्हणून कामी येतात ते चांगल्या सवयींचे फ्यूज, कृतज्ञतेचे एमसीबी आणि नियमित साधनेचे स्टॅबिलायझर.
+        </p>
+
+        <p>
+          आता लाईव्ह/पॉझिटीव्ह म्हणजे आपले बोलणे तर मग न्यूट्रल वायरचे काय? त्याशिवाय सर्किट पूर्ण होत नाही ना?
+        </p>
+
+        <p>
+          तर न्यूट्रल वायर म्हणजे कोणत्याही संवादात लक्षपूर्वक ऐकणे-वाचणे. लिहिले-बोलले जाणारे शब्द नीट समजून घेणे आणि नुसत्या शब्दांचेच नव्हे तर वाक्यातील दोन शब्दांत असलेल्या शांततेचा देखील अर्थ समजून घेणे. ही ऐकण्याची न्यूट्रल वायर लाईव्ह इतक्याच नव्हे तर थोड्याश्या जास्तच क्षमतेची असेल म्हणजे आपला संयम कांकणभर अधिक असेल तर संवादाचे सर्किट नीट पूर्ण होऊन नातेसंबंधांच्या ग्रिडची फ्रिक्वेन्सी स्थिर व सिस्टम स्टेबल राहते.
+        </p>
+
+        <p>
+          प्रामाणिक आत्मनिरीक्षणाचे सिस्टम-ऑडिट करत राहिले की नात्यांच्या ग्रिड मधील असंतुलन वेळीच लक्षात येऊन योग्य ती दुरुस्ती करायला मदत होते. अनुभूती येते.
+        </p>
+      </div>
+
+      <div class="mt-8 sm:mt-10 pt-4 text-center text-slate-500 dark:text-slate-400 font-medium text-base sm:text-lg tracking-wider">
+        ~ २०२५०७१६
+      </div>
+
+    </article>
+  </main>
+
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 px-5 py-2.5 rounded-full bg-slate-900/90 dark:bg-white/90 text-white dark:text-slate-900 text-sm font-medium shadow-2xl backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 z-50 flex items-center gap-2">
+    <svg class="w-4 h-4 text-emerald-400 dark:text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+    </svg>
+    <span id="toastMsg">लिंक कॉपी झाली!</span>
+  </div>
+
+  <script>
+    // Theme Management
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const htmlElement = document.documentElement;
+
+    function applyTheme(isDark) {
+      if (isDark) {
+        htmlElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        htmlElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      }
+    }
+
+    // Initialize Theme preference
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      applyTheme(true);
+    } else {
+      applyTheme(false);
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      const isCurrentlyDark = htmlElement.classList.contains('dark');
+      applyTheme(!isCurrentlyDark);
+    });
+
+    // Toast feedback helper
+    let toastTimeout;
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.textContent = message;
+      toast.classList.remove('opacity-0', 'translate-y-2');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-2');
+      }, 2500);
+    }
+
+    // Share Button Implementation
+    const shareBtn = document.getElementById('shareBtn');
+    shareBtn.addEventListener('click', async () => {
+      const shareData = {
+        title: 'सर्किट',
+        text: 'सर्किट - संवाद आणि नातेसंबंधांचे सुंदर विश्लेषण',
+        url: window.location.href
+      };
+
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+        } catch (err) {
+          // Fallback to clipboard if share was cancelled or failed
+          copyUrlFallback();
+        }
+      } else {
+        copyUrlFallback();
+      }
+    });
+
+    function copyUrlFallback() {
+      const dummyInput = document.createElement('input');
+      document.body.appendChild(dummyInput);
+      dummyInput.value = window.location.href;
+      dummyInput.select();
+      try {
+        document.execCommand('copy');
+        showToast('लिंक कॉपी झाली!');
+      } catch (e) {
+        showToast('लिंक कॉपी करण्यात त्रुटी.');
+      }
+      document.body.removeChild(dummyInput);
+    }
+  </script>
+</body>
+</html>
